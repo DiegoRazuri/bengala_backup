@@ -1,0 +1,155 @@
+
+{% extends 'layout.html' %}
+
+{% block title %}{% endblock %}
+
+{% block GeneralAdministrationPanel %}
+	<div class="wrapperGeneralAdministrationPanel">
+		{% if user %}
+			<figure class="userAvatar">
+				<img src= {{ user.photo }}>
+			</figure>
+			
+
+			
+
+			<ul class="userAdministrationPanel">
+				<li data-id={{ user._id }}  >
+					<a href=`api/userprofile/${{user._id}}`> mi cuenta </a>
+				</li>
+				<li>
+					<a href="/logout"> cerrar sesión </a>
+				</li>
+			</ul>
+		{% else %}
+			<div> btn más información</div>
+		{% endif %}
+	</div>
+{% endblock %}
+
+
+{% block content %}
+  	<div >
+	    {% if user %}
+	   		<h1>Bienvenido {{ user.name }}</h1>
+
+	   		<section id="temporalWrapper"></section>
+
+			<section>
+				<h4>agrega un catalogo</h4>
+				<form id="formCreateNewCatalog" action="/api/nuevo_catalogo" enctype="multipart/form-data">
+					<input id="title_item" name="title_item" type="text" placeholder="escribe un titulo" />
+					<input type="file" id="ImageBrowseCatalog" name="upl"/>
+					<input type="submit" id="btnCreateCatalog">
+				</form>
+
+				
+			</section>
+			<section>
+				<form id="addRelation">
+					<input id="enterprise" type="text" placeholder="ingresa el nombre de tu cliente"/>
+					<button id="btnAddClient">Agregar relacion</button>
+				</form>
+			</section>
+			<section>
+				<h4>calificar</h4>
+				<form id="formScore">
+					<label>puntualidad</label>
+					<radiogroup>
+						<input id="punctuality_score" name="punctuality_score" type="radio" value="1" />
+						<input id="punctuality_score" name="punctuality_score" type="radio" value="2" />
+						<input id="punctuality_score" name="punctuality_score" type="radio" value="3" />
+						<input id="punctuality_score" name="punctuality_score" type="radio" value="4" />
+						<input id="punctuality_score" name="punctuality_score" type="radio" value="5" />
+					</radiogroup>
+					<br>
+					<label>calidad</label>
+					<radiogroup>
+						<input id="quality_score" name="quality_score" type="radio" value="1" />
+						<input id="quality_score" name="quality_score" type="radio" value="2" />
+						<input id="quality_score" name="quality_score" type="radio" value="3" />
+						<input id="quality_score" name="quality_score" type="radio" value="4" />
+						<input id="quality_score" name="quality_score" type="radio" value="5" />
+					</radiogroup>
+					<br>
+					<label>precio</label>
+					<radiogroup>
+						<input id="price_score" name="price_score" type="radio" value="1" />
+						<input id="price_score" name="price_score" type="radio" value="2" />
+						<input id="price_score" name="price_score" type="radio" value="3" />
+						<input id="price_score" name="price_score" type="radio" value="4" />
+						<input id="price_score" name="price_score" type="radio" value="5" />
+					</radiogroup>
+
+					<br>
+					<label>servicio al cliente</label>
+					<radiogroup>
+						<input id="customer_support_score" name="customer_support_score" type="radio" value="1" />
+						<input id="customer_support_score" name="customer_support_score" type="radio" value="2" />
+						<input id="customer_support_score" name="customer_support_score" type="radio" value="3" />
+						<input id="customer_support_score" name="customer_support_score" type="radio" value="4" />
+						<input id="customer_support_score" name="customer_support_score" type="radio" value="5" />
+					</radiogroup>
+					<br>
+					<button id="btnQualify"> calificar</button>
+				</form>		
+			</section>
+
+			<section>
+				<h4> FORMULARIO GENERICO PARA HACER CONSULTAS EN DESARROLLO</h4>
+				<form id="formDevelopment" action="/api/agregar_empleado" enctype="multipart/form-data">
+					<input id="input_value" name="input_value" type="text" placeholder="input de consulta" />
+					<input type="submit" value="Enviar Datos"/>
+				</form>
+
+				
+			</section>
+
+	   	{% else %}
+		    <a href="/auth/twitter">ingresa con twitter</a>
+			<a href="/auth/facebook">ingresa con facebook</a>
+			<a href="/auth/linkedin">ingresa con linkedin</a>
+
+			 
+	</div>
+
+		{% endif %}
+    </div>
+
+
+
+
+	{%if user.workplaces.length > 0 %}
+		<script type="text/javascript">
+			var e_id = "{{ user.workplaces[0].enterprise._id }}"
+		</script>
+	{%else%}
+		<script type="text/javascript">
+			var e_id = " "
+		</script>
+	{%endif%}
+    {% if user %}
+		<script type="text/javascript">
+			console.log("cargo el script del template")
+
+			var user_id = "{{ user._id }}"
+			console.log("en swig este es el user_id: "+ user_id)
+/*
+//Estas lineas no funcionan porq no se recibe correctamente el objeto
+			var user_info = {{ user }}
+			console.log(user_info)
+*/
+		</script>
+
+	{% else %}
+		<script type="text/javascript">
+
+			var e_id = " "
+			var user_id = " "
+			
+			
+		</script>
+
+	{% endif %}
+	
+{% endblock %}
